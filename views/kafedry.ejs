@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="us">
+<head>
+  <meta charset="utf-8">
+   <style>
+    body {
+        margin: 0; 
+        height: 100vh; 
+        background-image: url('./vecteezy_pastel-blue-background-space-for-selling-products-on-the_.jpg'); 
+        background-size: cover; 
+        background-position: center; 
+    }
+    
+</style>
+  <title>Кафедри ФЕКТ</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+ 
+</head> 
+<body class="min-h-screen flex items-center justify-center p-4">
+ 
+  <div class="bg-gray-200  bg-opacity-60 shadow-lg rounded-lg " style="width: 440px; height: 500px;border:6px solid white; ">
+
+  <div class="text-center mb-8">
+  
+    <h2 style=" font-weight: bold" class="mt-7 text-red-600">Вітаємо, <%= username %>!</h2>
+  <br>
+  <p class="font-medium text-gray-700" style="color: black; font-size: 20px;">
+    Натисніть на одну з назв кафедр:
+  </p><br> 
+  <div class="flex justify-center">
+    <ul class="list-disc pl-4">
+      <% kafedry.forEach(function(row) { %>
+        <li class="mb-6">
+          <a href="/departments/<%= row.id %>" class="hover:bg-blue-200"><%= row.kafedry %></a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+  
+  <style>
+    ul li::marker {
+      color: white;
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-left: 0;
+    }
+    li a {
+      text-align: center;
+    }
+  </style>
+  
+ 
+  
+  <a href="/logout" class="text-red-500 hover:bg-purple-400 hover:text-white">Вихід</a>
+  </div>
+  </div>
+</body>
+</html>
