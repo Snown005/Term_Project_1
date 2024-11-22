@@ -4,7 +4,6 @@ const hash = require('pbkdf2-password')();
 const session = require('express-session');
 const path = require('path');
 const app = express();
-const ADMIN_PASSWORD =require('./info');
 const password =require('./info');
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -35,8 +34,7 @@ app.use(session({
 }));
 
 let adminHash, adminSalt;
-
-
+const ADMIN_PASSWORD = 'pinkLittleDogbarkingonElephantx0x0';
 hash({ password: ADMIN_PASSWORD }, function (err, pass, salt, hash) {
   if (err) throw err;
   adminHash = hash;
