@@ -30,7 +30,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
   resave: false,
   saveUninitialized: false,
-  secret: 'hello, Ben'
+  secret: 'hello, Ben',
+  cookie: { 
+    secure: false, 
+    maxAge: 3600000 
+  }
 }));
 
 let adminHash, adminSalt;
@@ -57,11 +61,24 @@ app.post('/home/register', function (req, res) {
         return res.status(500).json({ error: 'Error saving user to the database', details: err.message });
       }
       
-      res.redirect('/home_user');
+     
     });
   });
+  req.session.regenerate(function (err) {
+    if (err) {
+      console.error('Error regenerating session:', err);
+      return res.status(500).send('Internal Server Error');
+    }
+    req.session.user = { username, role: 'user' };
+    req.session.username = username;
+    req.session.save((err) => { 
+      if (err) {
+        console.error('Error saving session:', err);
+        return res.status(500).send('Failed to save session');
+      }
+    return res.redirect('/home_user'); });
 });
-
+});
 
 function authenticate(username, pass, fn) {
   if (username === 'admin') {

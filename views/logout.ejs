@@ -4,14 +4,19 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-        <title>Логаут</title>
+        <title>Вихід з системи</title>
       </head>
       <body class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-purple-200 rounded-lg shadow-lg p-6 text-center">
         <h1 class="text-2xl font-bold mb-6">Логаут</h1>
-        <form action="/api/logout" method="POST">
+        <form action="/api/logout" method="POST" onsubmit="return confirmLogout();">
         <button type="submit" class=" hover:bg-red-600 hover:text-white">
           <i class="fas fa-sign-out-alt"></i> Вийти</button></form> </div>
+          <script>
+            function confirmLogout(){
+              return confirm("Ви впевнені, що хочете вийти з системи?");
+            };
+          </script>
       </body>
 
 </html>

@@ -56,6 +56,27 @@
     button:hover {
       background-color: #0056b3;
     }
+    .tooltip {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      white-space: nowrap;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown:hover .tooltip {
+      display: block;
+    }
   </style>
   <title>Викладачі кафедри</title>
 </head>
@@ -77,6 +98,7 @@
           <td><%= teacher.Name %></td>
           <td><%= teacher.Email %></td>
           <td>
+            <div class="dropdown">
             <select data-id="<%= teacher.id %>" onchange="updateValue('<%= teacher.id %>', this.value)">
               <option value="<%= teacher.Amount %>" selected><%= teacher.Amount %></option>
               <option value="0">0</option>//
@@ -86,15 +108,33 @@
               <option value="4">4</option>
               <option value="5">5</option>
               <option value="6">6</option>
-          </select></td>
+          </select>
+          <div class="tooltip">Оберіть кількість вільних місць викладача зі списку</div></div></td>
+         
           <td><input type="text" id="student-name-<%= teacher.id %>" required></td>
           <td><button type="button" onclick="insertStudent('<%= teacher.id %>', '<%= teacher.Amount %>')">Додайте студента</button></td>
         </tr>
       <% }); %>
     </tbody>
   </table></div>
-  <script>
+  <script> 
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.addEventListener('mouseover', () => {
+        const tooltip = dropdown.querySelector('.tooltip');
+        tooltip.style.display = 'block';
+        setTimeout(() => {
+          tooltip.style.display = 'none';
+        }, 1200); 
+      });
+  
+      dropdown.addEventListener('mouseout', () => {
+        const tooltip = dropdown.querySelector('.tooltip');
+        tooltip.style.display = 'none';
+      });
+    });
     function updateValue(teacherId, newValue) {
+      const hopeconfirm=confirm('Ви впевнені, що хочете вибрати це');
+      if(!hopeconfirm) return;
       fetch('/update-amount', {
         method: 'POST',
         headers: {
@@ -124,9 +164,9 @@
         alert('Неможливо вибрати цього викладача, місць немає.');
         return;
       }
-  
+      const isconfirm=confirm('Ви впевнені, що хочете додати студента');
+      if(!isconfirm) return;
       const studentName = document.getElementById(`student-name-${teacherId}`).value;
-  
       fetch('/insertStudent', {
         method: 'POST',
         headers: {
@@ -138,14 +178,14 @@
       .then(data => {
         if (data.success) {
           alert(data.message);
-  
-          
           const selectElement = document.querySelector(`select[data-id="${teacherId}"]`);
           selectElement.value = data.newAmount; 
   
         } else {
           alert(data.message);
         }
+        const inputField=document.getElementById(`student-name-${teacherId}`);
+        inputField.value='';
       })
       .catch(err => {
         console.error('Помилка:', err);

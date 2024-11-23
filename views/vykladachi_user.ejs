@@ -94,6 +94,10 @@
         alert('Неможливо вибрати цього викладача, місць немає.');
         return;
       }
+      const confirmation = confirm('Ви впевнені, що хочете вибрати цього викладача?');
+  if (!confirmation) {
+    return; 
+  }
     
       fetch('/update-amount2', {
         method: 'POST',
