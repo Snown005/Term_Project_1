@@ -249,7 +249,7 @@ app.get('/', (req, res) => {
 
 
 app.post('/update-amount', (req, res) => {
-  const { id, amount } = req.body;
+  let { id, amount } = req.body;
 
   const query = 'UPDATE vykladachi_otit SET Amount = ? WHERE id = ?';
   
@@ -258,7 +258,8 @@ app.post('/update-amount', (req, res) => {
       return res.status(500).json({ success: false, message: 'Помилка бази даних' });
     }
     res.json({ success: true, message: 'Дані оновлено успішно' });
-  });
+    
+    });
 });
 
 app.post('/update-amount2', (req, res) => {

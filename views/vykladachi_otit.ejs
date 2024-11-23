@@ -118,6 +118,12 @@
     </tbody>
   </table></div>
   <script> 
+    document.querySelectorAll('select').forEach(select => {
+      select.addEventListener('change', () => {
+          location.reload();
+      });
+  });
+  
     document.querySelectorAll('.dropdown').forEach(dropdown => {
       dropdown.addEventListener('mouseover', () => {
         const tooltip = dropdown.querySelector('.tooltip');
@@ -153,6 +159,7 @@
             option.selected = (option.value === newValue); 
            
           }
+          document.querySelector(`#student-name-${teacherId}`).dataset.amount = newValue;
           alert('Значення успішно оновлено');
         } else {
           alert('Виникла помилка при оновленні');
@@ -160,6 +167,7 @@
       });
     }
     function insertStudent(teacherId, currentAmount) {
+      const amountFromDropdown = document.querySelector(`#student-name-${teacherId}`).dataset.amount || currentAmount;
       if (currentAmount <= 0) {
         alert('Неможливо вибрати цього викладача, місць немає.');
         return;
